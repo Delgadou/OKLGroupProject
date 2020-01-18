@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Char Removal</title>
+
+    <style>
+        p {
+            font: normal 20pt Arial;      
+        }
+    </style>
+
+</head>
+<body>
+    <h1>Remoção de caracteres</h1>
+    <p id = "list">O conjunto de palavras fornecido foi: </p>
+    <input id ="bot" type="button" value="Aplicar remoção do caracter" onclick="modification(); clicar()">
+
+     <script>
+        var b = 'Banana'
+        var c = 'Coliseu'
+        var a = 'Ananás'
+        var s = 'Sonic'
+        var p = 'Paralelepipedo'
+
+        var conteudo = document.getElementById('list')
+        var bot = document.getElementById('bot')
+
+        conteudo.innerText = `O conjunto de palavras fornecido foi: ${b}, ${c}, ${a}, ${s} e ${p}.`
+        
+        function clicar(){
+            bot.value = "Modificação feita com sucesso"
+        }
+
+        function modification() {
+            function remover(palavra) {
+                palavra = palavra.replace(/[aá]/gi, '')
+                return palavra
+            }
+            
+            b = remover(b)
+            c = remover(c)
+            a = remover(a)
+            s = remover(s)
+            p = remover(p)
+
+            conteudo.innerText = `O novo conjunto de palavras é: ${b}, ${c}, ${a}, ${s} e ${p}.`
+        }
+    </script>
+</body>
+</html>
