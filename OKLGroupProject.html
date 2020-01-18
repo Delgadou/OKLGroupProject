@@ -8,15 +8,52 @@
 
     <style>
         p {
-            font: normal 20pt Arial;      
+            font: normal 12pt Arial;      
         }
+
+        input#charInfo {
+            width: 100px;  
+            height: 10px;
+            line-height: 20px;
+            position: absolute;
+            left: 295px;
+            top: 152px;
+        }
+
+        input#anotherCharRemoval {
+            position: absolute;
+            left: 770px;
+            top: 149px;
+        }
+
+        p#txt {
+            position: absolute;
+            left: 406px;
+            top: 135px;
+        }
+
+        input#charSub {
+            width: 100px;  
+            height: 10px;
+            line-height: 20px;
+            position: absolute;
+            left: 660px;
+            top: 152px;
+        }
+
     </style>
 
 </head>
 <body>
     <h1>Remoção de caracteres</h1>
-    <p id = "list">O conjunto de palavras fornecido foi: </p>
-    <input id ="bot" type="button" value="Aplicar remoção do caracter" onclick="modification(); clicar()">
+    <p id = "list"></p>
+    <input id ="charRemoval" type="button" value="Aplicar remoção do caracter 'a'" onclick="modification(); txtMod()">
+    <input id ="anotherCharRemoval" type="button" value="Aplicar substituição de caracteres" onclick="alteration()">
+
+    <p>Informe o caracter que deseja substituir </p>
+    <p id = "txt">e logo em seguida o seu substítuto</p>
+    <input id = "charInfo" type="text" onkeypress="charInsert()">
+    <input id = "charSub" type="text" onkeypress="charInsert2()">
 
      <script>
         var b = 'Banana'
@@ -24,29 +61,66 @@
         var a = 'Ananás'
         var s = 'Sonic'
         var p = 'Paralelepipedo'
-
+        var charR
+        var charS
         var conteudo = document.getElementById('list')
-        var bot = document.getElementById('bot')
 
-        conteudo.innerText = `O conjunto de palavras fornecido foi: ${b}, ${c}, ${a}, ${s} e ${p}.`
+        conteudo.innerText = `O conjunto de palavras fornecido é: ${b}, ${c}, ${a}, ${s} e ${p}.`
         
-        function clicar(){
-            bot.value = "Modificação feita com sucesso"
+        function charInsert(){
+            var x = event.which || event.charCode
+            charR = String.fromCharCode(x);
+
+            if(x < 65 || x > 122) { 
+                alert('Por favor digite um caracter') 
+            }
+        } 
+
+        function charInsert2(){
+            var y = event.which || event.charCode
+            charS = String.fromCharCode(y);
+
+            if(y < 65 || y > 122) { 
+                alert('Por favor digite um caracter') 
+            }
+        } 
+
+        function txtMod(){
+            charRemoval.value = "Modificação realizada"
         }
 
         function modification() {
-            function remover(palavra) {
-                palavra = palavra.replace(/[aá]/gi, '')
+            function remove(palavra) {
+                palavra = palavra.replace(/[a]/g, '')
                 return palavra
             }
             
-            b = remover(b)
-            c = remover(c)
-            a = remover(a)
-            s = remover(s)
-            p = remover(p)
+            b = remove(b)
+            c = remove(c)
+            a = remove(a)
+            s = remove(s)
+            p = remove(p)
 
             conteudo.innerText = `O novo conjunto de palavras é: ${b}, ${c}, ${a}, ${s} e ${p}.`
+        }
+
+        function alteration(){
+            var regExInput = new RegExp(charR, "g")
+            var regExMod = new RegExp(charS)
+
+            function subs(palavra) {
+                palavra = palavra.replace(regExInput, charS)
+                return palavra
+            }
+
+            b = subs(b)
+            c = subs(c)
+            a = subs(a)
+            s = subs(s)
+            p = subs(p)
+
+            conteudo.innerText = `O novo conjunto de palavras é: ${b}, ${c}, ${a}, ${s} e ${p}.`
+
         }
     </script>
 </body>
