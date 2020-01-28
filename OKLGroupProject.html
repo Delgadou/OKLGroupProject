@@ -4,544 +4,121 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Char Removal</title>
+    <title>OKL Group Project</title>
 
     <style>
         p {
-            font: normal 12pt Arial;      
-        }
-
-        input#charInfo {
-            width: 100px;  
-            height: 10px;
-            line-height: 20px;
-            position: absolute;
-            left: 295px;
-            top: 152px;
-        }
-
-        input#anotherCharRemoval {
-            position: absolute;
-            left: 770px;
-            top: 149px;
-        }
-
-        p#txt {
-            position: absolute;
-            left: 406px;
-            top: 135px;
-        }
-
-        input#charSub {
-            width: 100px;  
-            height: 10px;
-            line-height: 20px;
-            position: absolute;
-            left: 660px;
-            top: 152px;
-        }
-
-        h1#txt1 {
-            position: absolute;
-            left: 5px;
-            top: 160px;
-        }
-
-        input#word {
-            position: absolute;
-            top: 225px;
-            font: normal 11pt Arial;
-        }
-
-        input#cryp {
-            position: absolute;
-            left: 190px;
-            top: 225px;
-            font: normal 11pt Arial;
-        }
-
-        input#deCryp {
-            position: absolute;
-            left: 290px;
-            top: 225px;
-            font: normal 11pt Arial;
-        }
-
-        div#result {
             font: normal 15pt Arial;
+        }
+
+        p#cryptedMessage {
             position: absolute;
+            left: 285px;
             top: 250px;
         }
 
-    </style>
+        p#decryptedMessage {
+            position: absolute;
+            left: 310px;
+            top: 295px;
+        }
 
+    </style>
 </head>
 <body>
     <h1>Remoção de caracteres</h1>
-    <p id = "list"></p>
-    <input id ="charRemoval" type="button" value="Aplicar remoção do caracter 'a'" onclick="modification(); txtMod()">
-    <input id ="anotherCharRemoval" type="button" value="Aplicar substituição de caracteres" onclick="alteration()">
-
-
-    <p>Informe o caracter que deseja substituir </p>
-    <p id = "txt">e logo em seguida o seu substítuto</p>
-    <input id = "charInfo" type="text" onkeypress="charInsert()">
-    <input id = "charSub" type="text" onkeypress="charInsert2()">
+    <p id = "wordssTextMessage"></p><input type="button" value="Remover caracter 'a'" onclick="removeCharacterA()">
     <br>
 
+    <p>Informe o caracter que deseja retirar <input id = "charToBeRemoved" type="text" onkeypress="errorAlert()"> e o seu substítuto <input id = "charToReplace" type="text" onkeypress="errorAlert()">
+    <input type="button" value="Substítuir caracteres" onclick="characterReplacement()"> </p>
 
-    <h1 id = "txt1">Criptografia de palavras</h1>
-    <input id = "word" placeholder="Digite algo" type="text" >
-    <input id = "cryp" type="button" value="Criptografar" onclick="encrypt()">
-    <input id = "deCryp" type="button" value="Descriptografar" onclick="decrypt()">  
-    <div id = "result"></div>
+    <h1>Criptografia de palavras</h1>
+    <p><input id = "stringValue" placeholder="Digite algo" type="text" >
+    <input type="button" value="Criptografar" onclick="encryptString()"> </p> 
+    <p id = 'cryptedMessage'></p>
 
-     <script>
-        var b = 'Banana'
-        var c = 'Coliseu'
-        var a = 'Ananás'
-        var s = 'Sonic'
-        var p = 'Paralelepipedo'
-        var charR
-        var charS
-        var conteudo = document.getElementById('list')
+    <p>
+    <input id = "ecryptedStringValue" placeholder="Insira a mensagem criptografada" type="text" >
+    <input type="button" value="Descriptografar" onclick="decryptString()">
+    <p id = 'decryptedMessage'></p>
+    
+    </p>
 
-        conteudo.innerText = `O conjunto de palavras fornecido é: ${b}, ${c}, ${a}, ${s} e ${p}.`
+    <script>
+        var message = ''
+        var words = ['Banana', 'Coliseu', 'Ananás', 'Sonic', 'Paralelepipedo']
+        document.getElementById('wordssTextMessage').innerText = `As palavras fornecidas são: ${words[0]}, ${words[1]}, ${words[2]}, ${words[3]}, ${words[4]}`
+
+        function removeCharacterA() {            
+            let words = removeCharacter(self.words, 'a')
+            document.getElementById('wordssTextMessage').innerText = `As palavras depois da remoção do caracter 'a' são: ${words[0]}, ${words[1]}, ${words[2]}, ${words[3]}, ${words[4]}`
+        }  
+
+        function removeCharacter(words, character) {
+            let result = []
+            let characterConvertedToRegEx = convertCharToRegEx(character)                       
+            words.forEach(word => {
+                result.push( word.replace(characterConvertedToRegEx, '') )
+            });                   
+            return result            
+        }
+
+        function characterReplacement(){
+            let words = replacingChar(self.words, document.getElementById('charToBeRemoved').value, document.getElementById('charToReplace').value) //Paramêtro grande demais?
+            document.getElementById('wordssTextMessage').innerText = `As palavras fornecidas são: ${words[0]}, ${words[1]}, ${words[2]}, ${words[3]}, ${words[4]}`
+        }
+
+        function replacingChar(words, removeThisCharacter, replaceCharacter){ 
+            let result = []
+            let charConvertedtoRegEx = convertCharToRegEx(removeThisCharacter)
+            words.forEach(replacingCharacters => {
+                result.push( replacingCharacters.replace(charConvertedtoRegEx, replaceCharacter))           
+            })
+            return result
+        }
+
+        function encryptString(){
+            message = 'A mensagem criptografada é: '
+            let encryptedString = encryptingString(document.getElementById('stringValue').value) //Parâmetro grande demais?
+            document.getElementById('cryptedMessage').innerText = message
+        }
+
+        function encryptingString(stringToBeEncrypt){
+            Array.prototype.map.call(stringToBeEncrypt, charFromString =>{ 
+                    var modifyingUniCode = charFromString.charCodeAt(0) + 3
+                    var charToString  = String.fromCharCode(modifyingUniCode)
+                    message += charToString
+            }) 
+        }
         
-        function charInsert(){
-            var x = event.which || event.charCode
-            charR = String.fromCharCode(x);
+        function decryptString(){
+            message = 'A mensagem descriptografada é: '
+            let decryptedString = decryptingString(document.getElementById('ecryptedStringValue').value)
+            document.getElementById('decryptedMessage').innerText = message
+        }
 
+        function decryptingString(stringToBeDecrypt){   
+            Array.prototype.map.call(stringToBeDecrypt, charFromString =>{
+                var modifyingUniCode = charFromString.charCodeAt(0) - 3
+                var charToString  = String.fromCharCode(modifyingUniCode)
+                message += charToString
+            })
+        }
+
+        function convertCharToRegEx(character){ 
+            var regEx = new RegExp(character, "g")
+            return regEx
+        }
+
+        function errorAlert() { 
+            var x = event.which || event.charCode
             if(x < 65 || x > 122) { 
                 alert('Por favor digite um caracter') 
             }
-        } 
-
-        function charInsert2(){
-            var y = event.which || event.charCode
-            charS = String.fromCharCode(y);
-
-            if(y < 65 || y > 122) { 
-                alert('Por favor digite um caracter') 
-            }
-        } 
-
-        function txtMod(){
-            charRemoval.value = "Modificação realizada"
-        }
-
-        function modification() {
-            function remove(palavra) {
-                palavra = palavra.replace(/[a]/g, '')
-                return palavra
-            }
-            
-            b = remove(b)
-            c = remove(c)
-            a = remove(a)
-            s = remove(s)
-            p = remove(p)
-
-            conteudo.innerText = `O novo conjunto de palavras é: ${b}, ${c}, ${a}, ${s} e ${p}.`
-        }
-
-        function alteration(){
-            var regExInput = new RegExp(charR, "g")
-            var regExMod = new RegExp(charS)
-
-            function subs(palavra) {
-                palavra = palavra.replace(regExInput, charS)
-                return palavra
-            }
-
-            b = subs(b)
-            c = subs(c)
-            a = subs(a)
-            s = subs(s)
-            p = subs(p)
-
-            conteudo.innerText = `O novo conjunto de palavras é: ${b}, ${c}, ${a}, ${s} e ${p}.`
-
-        }
-    
-        function encrypt() {
-            var normalTxt = document.getElementById('word').value
-            var tempTxt = ""
-            for(i = 0; i < normalTxt.length; i++){
-                tempTxt += enc(normalTxt[i])
-            }
-            document.getElementById('result').innerHTML = tempTxt
-        }
-        
-        function decrypt() {
-            var normalTxt = document.getElementById('word').value
-            var tempTxt = ""
-            for(i = 0; i < normalTxt.length; i++){
-                tempTxt += dec(normalTxt[i])
-            }
-            document.getElementById('result').innerHTML = tempTxt
-        }
-
-
-        function enc(x){
-            switch(x){
-                case 'a':
-                    return 'x';
-                    break;
-                case 'b':
-                    return 'z'
-                    break    
-                case 'c':
-                    return 'v'
-                    break      
-                case 'd':
-                    return 'n'
-                    break
-                case 'e':
-                    return 'm'
-                    break    
-                case 'f':
-                    return 'k'
-                    break  
-                case 'g':
-                    return 'j'
-                    break
-                case 'h':
-                    return 'l'
-                    break    
-                case 'i':
-                    return 'o'
-                    break  
-                case 'j':
-                    return 'p'
-                    break
-                case 'k':
-                    return 'q'
-                    break    
-                case 'l':
-                    return 't'
-                    break   
-                case 'm':
-                    return 'i'
-                    break
-                case 'n':
-                    return 's'
-                    break    
-                case 'o':
-                    return 'u'
-                    break  
-                case 'p':
-                    return 'r'
-                    break    
-                case 'q':
-                    return 'g'
-                    break  
-                case 'r':
-                    return 'h'
-                    break
-                case 's':
-                    return 'c'
-                    break    
-                case 't':
-                    return 'b'
-                    break  
-                case 'u':
-                    return 'e'
-                    break
-                case 'v':
-                    return 'a'
-                    break    
-                case 'x':
-                    return 'y'
-                    break   
-                case 'z':
-                    return 'd'
-                    break    
-                case 'y':
-                    return 'f'
-                    break  
-                case 'ã' :
-                    return 'í';
-                    break;
-                case 'á':
-                    return 'õ'
-                    break    
-                case 'ç':
-                    return '/'
-                    break
-                case 'í':
-                    return 'á' 
-                    break     
-                case 'A':
-                    return 'X';
-                    break;
-                case 'B':
-                    return 'Z'
-                    break    
-                case 'C':
-                    return 'V'
-                    break      
-                case 'D':
-                    return 'N'
-                    break
-                case 'E':
-                    return 'M'
-                    break    
-                case 'F':
-                    return 'K'
-                    break  
-                case 'G':
-                    return 'J'
-                    break
-                case 'H':
-                    return 'L'
-                    break    
-                case 'I':
-                    return 'O'
-                    break  
-                case 'J':
-                    return 'P'
-                    break
-                case 'K':
-                    return 'Q'
-                    break    
-                case 'L':
-                    return 'T'
-                    break   
-                case 'M':
-                    return 'I'
-                    break
-                case 'N':
-                    return 'S'
-                    break    
-                case 'O':
-                    return 'U'
-                    break  
-                case 'P':
-                    return 'R'
-                    break    
-                case 'Q':
-                    return 'G'
-                    break  
-                case 'R':
-                    return 'H'
-                    break
-                case 'S':
-                    return 'C'
-                    break    
-                case 'T':
-                    return 'B'
-                    break  
-                case 'U':
-                    return 'E'
-                    break
-                case 'V':
-                    return 'A'
-                    break    
-                case 'X':
-                    return 'Y'
-                    break   
-                case 'Z':
-                    return 'D'
-                    break    
-                case 'Y':
-                    return 'F'
-                    break  
-                case 'Ã' :
-                    return 'Í';
-                    break;
-                case 'Á':
-                    return 'Õ'
-                    break    
-                case 'Ç':
-                    return '/'
-                    break
-                case 'Í':
-                    return 'Á' 
-                    break     
-                }
-            }
-
-            function dec(x){
-            switch(x){
-                case 'x':
-                    return 'a';
-                    break;
-                case 'z':
-                    return 'b'
-                    break    
-                case 'v':
-                    return 'c'
-                    break      
-                case 'n':
-                    return 'd'
-                    break
-                case 'm':
-                    return 'e'
-                    break    
-                case 'k':
-                    return 'f'
-                    break  
-                case 'j':
-                    return 'g'
-                    break
-                case 'l':
-                    return 'h'
-                    break    
-                case 'o':
-                    return 'i'
-                    break  
-                case 'p':
-                    return 'j'
-                    break
-                case 'q':
-                    return 'k'
-                    break    
-                case 't':
-                    return 'l'
-                    break   
-                case 'i':
-                    return 'm'
-                    break
-                case 's':
-                    return 'n'
-                    break    
-                case 'u':
-                    return 'o'
-                    break  
-                case 'r':
-                    return 'p'
-                    break    
-                case 'g':
-                    return 'q'
-                    break  
-                case 'h':
-                    return 'r'
-                    break
-                case 'c':
-                    return 's'
-                    break    
-                case 'b':
-                    return 't'
-                    break  
-                case 'e':
-                    return 'u'
-                    break
-                case 'a':
-                    return 'v'
-                    break    
-                case 'y':
-                    return 'x'
-                    break   
-                case 'd':
-                    return 'z'
-                    break    
-                case 'f':
-                    return 'y'
-                    break  
-                case 'í' :
-                    return 'ã';
-                    break;
-                case 'õ':
-                    return 'á'
-                    break    
-                case '/':
-                    return 'ç'
-                    break
-                case 'á':
-                    return 'í' 
-                    break     
-                case 'X':
-                    return 'A';
-                    break;
-                case 'Z':
-                    return 'B'
-                    break    
-                case 'V':
-                    return 'C'
-                    break      
-                case 'N':
-                    return 'D'
-                    break
-                case 'M':
-                    return 'E'
-                    break    
-                case 'K':
-                    return 'F'
-                    break  
-                case 'J':
-                    return 'G'
-                    break
-                case 'L':
-                    return 'H'
-                    break    
-                case 'O':
-                    return 'I'
-                    break  
-                case 'P':
-                    return 'J'
-                    break
-                case 'Q':
-                    return 'K'
-                    break    
-                case 'T':
-                    return 'L'
-                    break   
-                case 'I':
-                    return 'M'
-                    break
-                case 'S':
-                    return 'N'
-                    break    
-                case 'U':
-                    return 'O'
-                    break  
-                case 'R':
-                    return 'P'
-                    break    
-                case 'G':
-                    return 'Q'
-                    break  
-                case 'H':
-                    return 'R'
-                    break
-                case 'C':
-                    return 'S'
-                    break    
-                case 'B':
-                    return 'T'
-                    break  
-                case 'E':
-                    return 'U'
-                    break
-                case 'A':
-                    return 'V'
-                    break    
-                case 'Y':
-                    return 'X'
-                    break   
-                case 'D':
-                    return 'Z'
-                    break    
-                case 'F':
-                    return 'Y'
-                    break  
-                case 'Í' :
-                    return 'Ã';
-                    break;
-                case 'Õ':
-                    return 'Á'
-                    break    
-                case '/':
-                    return 'Ç'
-                    break
-                case 'Á':
-                    return 'Í' 
-                    break     
-            }
-            
         }
     
     </script>
+
 </body>
 </html>
