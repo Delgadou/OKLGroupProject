@@ -65,7 +65,7 @@
         }
 
         function characterReplacement(){
-            let words = replacingChar(self.words, document.getElementById('charToBeRemoved').value, document.getElementById('charToReplace').value) //Paramêtro grande demais?
+            let words = replacingChar(self.words, document.getElementById('charToBeRemoved').value, document.getElementById('charToReplace').value) 
             document.getElementById('wordssTextMessage').innerText = `As palavras fornecidas são: ${words[0]}, ${words[1]}, ${words[2]}, ${words[3]}, ${words[4]}`
         }
 
@@ -80,7 +80,7 @@
 
         function encryptString(){
             message = 'A mensagem criptografada é: '
-            let encryptedString = encryptingString(document.getElementById('stringValue').value) //Parâmetro grande demais?
+            let encryptedString = encryptingString(document.getElementById('stringValue').value)
             document.getElementById('cryptedMessage').innerText = message
         }
 
